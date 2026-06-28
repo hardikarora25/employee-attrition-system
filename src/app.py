@@ -43,13 +43,21 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+import os
+
 # Cache the data loader and preprocessor to run instantly on user clicks
 @st.cache_resource
 def load_resources():
-    model = joblib.load('../models/final_optimized_rf_model.pkl')
-    scaler = joblib.load('../models/scaler.pkl')
+    # Build absolute paths based on the script location so it works locally and on Cloud
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    model_path = os.path.join(base_dir, 'models', 'final_optimized_rf_model.pkl')
+    scaler_path = os.path.join(base_dir, 'models', 'scaler.pkl')
+    data_path = os.path.join(base_dir, 'data', 'attrition_clean.csv')
+
+    model = joblib.load(model_path)
+    scaler = joblib.load(scaler_path)
     
-    clean_df = pd.read_csv('../data/attrition_clean.csv')
+    clean_df = pd.read_csv(data_path)
     X_train_raw = clean_df.drop(columns=['Attrition'], errors='ignore')
     X_train_encoded = X_train_raw.copy()
     
