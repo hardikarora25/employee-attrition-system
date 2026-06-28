@@ -70,12 +70,13 @@ def load_resources():
     
     X_train_scaled_cols = X_train_encoded.columns.tolist()
     
+    import pandas.api.types as ptypes
     defaults = {}
     for col in X_train_raw.columns:
-        if X_train_raw[col].dtype == 'object':
-            defaults[col] = X_train_raw[col].mode()[0]
-        else:
+        if ptypes.is_numeric_dtype(X_train_raw[col]):
             defaults[col] = int(X_train_raw[col].median())
+        else:
+            defaults[col] = X_train_raw[col].mode()[0]
             
     return model, scaler, X_train_scaled_cols, defaults
 
