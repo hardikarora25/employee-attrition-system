@@ -29,9 +29,7 @@ dist/
 # Environment files
 .env
 
-# Model files
-*.pkl
-*.joblib
+# Model files (keeping pkl/joblib tracked for deployment)
 
 # Large or raw data
 data/raw/
